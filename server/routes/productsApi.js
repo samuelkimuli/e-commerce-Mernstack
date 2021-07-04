@@ -42,6 +42,37 @@ async (req,res) => {
         
     }
 })
-router.get("/", (req,res) => res.send("This is the product route"))
+
+//get all products
+router.get("/", async (req,res) => {
+    try {
+        const products = await Product.find()
+        res.json({products})
+        
+    } catch (error) {
+        console.error(error.message)
+        res
+        .status(500)
+        .send("something is wrong")
+        
+    }
+})
+
+//get a particular product
+router.get("/:id", async (req,res) => {
+    try {
+        const product = await Product.findById(req.params.id)
+        if(!product) {
+          return res
+          .status(404).
+          json({msg:"product not found"})
+    }
+    } catch (error) {
+        console.error(error.message)
+        res
+        .status(500)
+        .send("something is wrong")
+    }
+})
 
 module.exports = router
