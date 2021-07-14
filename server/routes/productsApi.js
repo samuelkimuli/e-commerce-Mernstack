@@ -24,16 +24,18 @@ async (req,res) => {
     }
 
     try {
-        const {name,description,category,price,quantity} = req.body
-        const newProduct = await new Product({
+        console.log(req.body)
+        const {name,description,category,price,brand,quantity} = req.body
+        const newProduct =  new Product({
             userId: req.user.id,
             name,
             description,
             category,
             price,
+            brand,
             quantity,
         })
-        const product = newProduct.save()
+        const product = await newProduct.save()
         res.json({product})
 
     } catch (error) {
@@ -67,6 +69,7 @@ router.get("/:id", async (req,res) => {
           .status(404).
           json({msg:"product not found"})
     }
+    res.json({product})
     } catch (error) {
         console.error(error.message)
         res
